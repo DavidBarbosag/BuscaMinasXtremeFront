@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #c0c0c0;
+    font-family: Tahoma, Verdana, sans-serif;
+}
+
+.title {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: black;
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.input {
+    padding: 10px;
+    font-size: 16px;
+    font-family: Tahoma, Verdana, sans-serif;
+    border: 2px inset #808080;
+    background-color: #ffffff;
+    color: black;
+    width: 220px;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+}
+
+.xpButton {
+    background-color: #e0e0e0;
+    border: 2px outset #ffffff;
+    color: black;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: Tahoma, Verdana, sans-serif;
+    cursor: pointer;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+    transition: background-color 0.2s ease;
+}
+
+.xpButton:hover {
+    background-color: #d0d0d0;
+}

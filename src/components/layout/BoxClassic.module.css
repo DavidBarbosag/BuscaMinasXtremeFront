@@ -1,0 +1,42 @@
+.BoxClassicGlobalCol {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 2rem;
+    box-shadow: inset 2px 2px #FFFFFF, inset -2px -2px #808080;
+    background-color: #D4D0C8;
+    border-radius: 4px;
+}
+
+.BoxClassicGlobalRow {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+    padding: 2rem;
+    box-shadow: inset 2px 2px #FFFFFF, inset -2px -2px #808080;
+    background-color: #D4D0C8;
+    border-radius: 4px;
+}
+
+.BoxClassicRow {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    padding: 2rem;
+    border: 2px solid #808080;
+    box-shadow: inset 2px 2px #FFFFFF, inset -2px -2px #808080;
+    background-color: #D4D0C8;
+    border-radius: 4px;
+}
+
+.BoxClassicCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    border: 2px solid #808080;
+    box-shadow: inset 2px 2px #FFFFFF, inset -2px -2px #808080;
+    background-color: #D4D0C8;
+    border-radius: 4px;
+}
+

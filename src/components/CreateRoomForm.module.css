@@ -1,0 +1,38 @@
+.row {
+    display: flex;
+    gap: 1rem;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.label {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+    font-size: 14px;
+}
+
+.select {
+    margin-top: 4px;
+    padding: 4px;
+    background-color: #FFFFFF;
+    border: 2px solid #808080;
+    box-shadow: inset 1px 1px #FFFFFF, inset -1px -1px #808080;
+    border-radius: 2px;
+}
+
+.input {
+    margin-top: 4px;
+    padding: 4px;
+    background-color: #FFFFFF;
+    border: 2px solid #808080;
+    box-shadow: inset 1px 1px #FFFFFF, inset -1px -1px #808080;
+    border-radius: 2px;
+}
+
+.subtitle {
+    font-size: 16px;
+    margin-bottom: 0.5rem;
+}

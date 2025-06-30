@@ -1,0 +1,15 @@
+.xpButton {
+    background-color: #e0e0e0;
+    border: 2px outset #ffffff;
+    color: black;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-family: Tahoma, Verdana, sans-serif;
+    cursor: pointer;
+    box-shadow: inset 1px 1px #fff, inset -1px -1px #808080;
+    transition: background-color 0.2s ease;
+}
+
+.xpButton:hover {
+    background-color: #d0d0d0;
+}
