@@ -3,6 +3,7 @@ import Home from './pages/Home';
 import JoinRoom from './pages/JoinRoom';
 import CreateRoom from './pages/CreateRoom';
 import './App.css'
+import GamePage from './pages/GamePage';
 
 function App() {
   return (
@@ -10,6 +11,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/join" element={<JoinRoom />} />
         <Route path="/create" element={<CreateRoom />} />
+          <Route path="/game" element={<GamePage />} />
       </Routes>
   );
 }

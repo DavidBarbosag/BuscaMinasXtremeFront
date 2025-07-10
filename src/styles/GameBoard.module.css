@@ -1,0 +1,43 @@
+.board {
+    display: inline-block;
+    border: 2px solid #222;
+}
+
+.row {
+    display: flex;
+}
+
+.cell {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #ccc;
+    text-align: center;
+    vertical-align: middle;
+    font-size: 20px;
+    line-height: 40px;
+    font-weight: bold;
+    user-select: none;
+}
+
+.empty {
+    background-color: #eee;
+}
+
+.one {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.two {
+    background-color: #b8daff;
+    color: #004085;
+}
+
+.mine {
+    background-color: #ffcccc;
+    color: #721c24;
+}
+
+.unknown {
+    background-color: #ddd;
+}
