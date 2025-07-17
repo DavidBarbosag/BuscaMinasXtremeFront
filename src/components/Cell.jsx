@@ -1,24 +1,29 @@
 import React from "react";
-import styles from "../styles/Cell.module.css";
+import cellStyles from "../styles/Cell.module.css";
+import mineFStyles from "../styles/MineF.module.css";
+
 
 const Cell = ({ cell }) => {
-    const { state, content } = cell;
+    let className = cellStyles.cell;
 
-    const renderContent = () => {
-        if (state !== "discovered") return ""; // 👈 No mostrar nada si está cubierta
+    if (cell.state === "covered") className += ` ${cellStyles.covered}`;
+    else if (cell.state === "revealed") className += ` ${cellStyles.revealed}`;
+    else if (cell.state === "flagged") className += ` ${cellStyles.flagged}`;
+    else if (cell.state === "player") className += ` ${cellStyles.player}`;
+    else className += ` ${cellStyles.unknown}`;
 
-        const stringContent = String(content);
-        if (stringContent.startsWith("P")) return stringContent;
-        if (stringContent === "ME") return "💣";
-        if (stringContent === "0") return "o";
-        return stringContent;
-    };
+    if (cell.type === "mine") {
 
-    return (
-        <div className={styles.cell}>
-            {renderContent()}
-        </div>
-    );
+        className += ` ${mineFStyles.mineF}`;
+        if (cell.state === "covered") className += ` ${mineFStyles.covered}`;
+        else if (cell.state === "flagged") className += ` ${mineFStyles.flagged}`;
+        else if (cell.state === "revealed") className += ` ${mineFStyles.revealed}`;
+    }
+
+    let display = cell.content;
+
+    return <div className={className}>{display}</div>;
 };
+
 
 export default Cell;

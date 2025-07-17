@@ -64,10 +64,22 @@ export const useGame = () => {
         }
     };
 
+
+    const flagElement = async (playerId, direction) => {
+        try {
+            await axios.post(`${API_URL}/flag`, null, {
+                params: { playerId, direction },
+            });
+            await fetchGameState(); // Refresca después de marcar
+        } catch (err) {
+            console.error('Error flagging element:', err);
+        }
+    };
+
     // Efecto para refrescar automáticamente el estado del juego cada segundo
     useEffect(() => {
         fetchGameState();
-        const interval = setInterval(fetchGameState, 1000);
+        const interval = setInterval(fetchGameState, 300);
         return () => clearInterval(interval);
     }, []);
 
@@ -76,6 +88,10 @@ export const useGame = () => {
         player,
         initializeGame,
         createPlayer,
-        movePlayer
+        movePlayer,
+        flagElement
     };
+
+
+
 };

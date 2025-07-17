@@ -1,4 +1,4 @@
-.cell {
+.MineF {
     width: 32px;
     height: 32px;
     border: 1px solid #999;
@@ -14,17 +14,11 @@
 }
 
 .revealed {
-    background-color: #e0e0e0;
+    background-color: red;
 }
 
 .flagged {
     background-color: #ffdd57;
-    color: red;
-}
-
-.player {
-    background-color: #a0d2ff;
-    color: #000;
 }
 
 .unknown {

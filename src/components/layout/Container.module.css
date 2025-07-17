@@ -4,6 +4,12 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #c0c0c0;
+    background-color: #D4D0C8;
     font-family: Tahoma, Verdana, sans-serif;
+}
+
+.flexRow {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
 }

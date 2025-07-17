@@ -12,7 +12,6 @@ export default function JoinForm() {
         e.preventDefault();
         if (roomCode.trim()) {
             console.log('Joining room:', roomCode);
-            // Aquí se haría la petición al backend
         }
     };
 
