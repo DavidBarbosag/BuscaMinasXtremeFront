@@ -1,97 +1,79 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import SockJS from 'sockjs-client';
+import { Stomp } from '@stomp/stompjs';
 
-const API_URL = 'http://localhost:8080/gameManager';
-
-export const useGame = () => {
+export function useGame() {
     const [gameState, setGameState] = useState(null);
-    const [player, setPlayer] = useState(null); // Guardamos el jugador creado
+    const [player, setPlayer] = useState(null);
+    const [isConnected, setIsConnected] = useState(false);
+    const stompClientRef = useRef(null);
 
-    //  Inicializa el juego con los parámetros dados
-    const initializeGame = async (rows, cols, globalMines, minesPerPlayer) => {
-        try {
-            await axios.post(`${API_URL}/init`, null, {
-                params: { rows, cols, globalMines, minesPerPlayer }
-            });
-            await fetchGameState();
-        } catch (err) {
-            console.error('Error initializing game:', err);
-        }
-    };
-
-    //  Crea un nuevo jugador en una posición
-    const createPlayer = async (x, y, mines) => {
-        try {
-            const response = await axios.post(
-                `http://localhost:8080/gameManager/player?mines=${mines}`,
-                {
-                    x: x,
-                    y: y
-                },
-                {
-                    headers: {
-                        "Content-Type": "application/json"
-                    }
-                }
-            );
-            setPlayer(response.data);
-            return response.data;
-        } catch (error) {
-            console.error("Error creating player:", error);
-            throw error;
-        }
-    };
-
-    // 🔄 Refresca el estado del juego desde el backend
-    const fetchGameState = async () => {
-        try {
-            const res = await axios.get(`${API_URL}/state`);
-            setGameState(res.data);
-        } catch (err) {
-            console.error('Error fetching game state:', err);
-        }
-    };
-
-    // 🔁 Mueve al jugador en una dirección ('W', 'A', 'S', 'D')
-    const movePlayer = async (playerId, direction) => {
-        try {
-            await axios.post(`${API_URL}/move`, null, {
-                params: { playerId, direction },
-            });
-            await fetchGameState(); // Refresca después de mover
-        } catch (err) {
-            console.error('Error moving player:', err);
-        }
-    };
-
-
-    const flagElement = async (playerId, direction) => {
-        try {
-            await axios.post(`${API_URL}/flag`, null, {
-                params: { playerId, direction },
-            });
-            await fetchGameState(); // Refresca después de marcar
-        } catch (err) {
-            console.error('Error flagging element:', err);
-        }
-    };
-
-    // Efecto para refrescar automáticamente el estado del juego cada segundo
     useEffect(() => {
-        fetchGameState();
-        const interval = setInterval(fetchGameState, 300);
-        return () => clearInterval(interval);
+        const socket = new SockJS('http://localhost:8080/ws');
+        const client = Stomp.over(socket);
+
+        client.connect({}, () => {
+            setIsConnected(true);
+            stompClientRef.current = client;
+
+            client.subscribe('/topic/state', message => {
+                const state = JSON.parse(message.body);
+                setGameState(state);
+            });
+
+            client.subscribe('/topic/playerCreated', message => {
+                const newPlayer = JSON.parse(message.body);
+                setPlayer(newPlayer);
+            });
+        });
+
+        return () => {
+            client.disconnect();
+            setIsConnected(false);
+        };
     }, []);
+
+    const sendMessage = (destination, body) => {
+        if (stompClientRef.current?.connected) {
+            stompClientRef.current.publish({
+                destination,
+                body: JSON.stringify(body),
+            });
+        }
+    };
+
+    const initializeGame = (rows, cols, globalMines, minesPerPlayer) => {
+        sendMessage('/app/init', { rows, cols, globalMines, minesPerPlayer });
+    };
+
+    const createPlayer = (x, y, mines) => {
+        sendMessage('/app/createPlayer', { x, y, mines });
+    };
+
+    const movePlayer = (playerId, direction) => {
+        if (!playerId) {
+            console.warn('No playerId provided for move');
+            return;
+        }
+        sendMessage('/app/move', { playerId, direction });
+    };
+
+    const flagElement = (playerId, direction) => {
+        if (!playerId) {
+            console.warn('No playerId provided for flag');
+            return;
+        }
+        sendMessage('/app/flag', { playerId, direction });
+    };
+
 
     return {
         gameState,
         player,
+        isConnected,
         initializeGame,
         createPlayer,
         movePlayer,
-        flagElement
+        flagElement,
     };
-
-
-
-};
+}

@@ -18,6 +18,7 @@ const GamePage = () => {
     const {
         gameState,
         player,
+        isConnected,
         initializeGame,
         createPlayer,
         movePlayer,
@@ -25,7 +26,7 @@ const GamePage = () => {
     } = useGame();
 
     useEffect(() => {
-        const start = async () => {
+        if (isConnected) {
             const { bombs, mapSize, minesPerPlayer } = location.state || {};
 
             if (!bombs || !mapSize || !minesPerPlayer) {
@@ -33,11 +34,10 @@ const GamePage = () => {
                 return;
             }
 
-            await initializeGame(mapSize, mapSize, bombs, minesPerPlayer);
-            await createPlayer(0, 0, 2);
-        };
-        start();
-    }, []);
+            initializeGame(mapSize, mapSize, bombs, minesPerPlayer);
+            createPlayer(0, 0, 2);
+        }
+    }, [isConnected]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
