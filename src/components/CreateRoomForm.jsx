@@ -21,7 +21,9 @@ export default function CreateRoomForm() {
             return;
         }
 
-        navigate('/game', {
+        const gameId = Math.random().toString(36).substring(2, 15); // Generate a random game ID
+
+        navigate('/game/${gameId}', {
             state: {
                 players: parseInt(players),
                 minesPerPlayer: parseInt(minesPerPlayer),

@@ -1,10 +1,12 @@
 // src/components/GameBoard.jsx
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Cell from "./Cell";
 import { useGame } from "../hooks/useGame";
 
 const GameBoard = () => {
-    const { gameState } = useGame();
+    const { gameId } = useParams();
+    const { gameState } = useGame(gameId);
     const [cellMatrix, setCellMatrix] = useState([]);
 
     useEffect(() => {

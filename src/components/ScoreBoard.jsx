@@ -1,11 +1,13 @@
 import React from "react";
 import { useGame } from "../hooks/useGame";
+import { useParams } from "react-router-dom";
 
 import BoxStyles from "./layout/BoxClassic.module.css";
 import TitleStyles from "./layout/Title.module.css";
 
 const ScoreBoard = () => {
-    const { gameState } = useGame();
+    const { gameId } = useParams();
+    const { gameState } = useGame(gameId);
 
     if (!gameState || !gameState.players || gameState.players.length === 0) {
         return null;

@@ -1,7 +1,7 @@
 // src/pages/GamePage.jsx
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useGame } from '../hooks/useGame';
-import { useLocation, useNavigate } from 'react-router-dom';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import GameBoard from '../components/GameBoard';
 
 
@@ -13,8 +13,14 @@ import title from '../components/layout/Title.module.css';
 import ScoreBoard from "../components/ScoreBoard.jsx";
 
 const GamePage = () => {
+    const { gameId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
+
+    const { bombs, mapSize, minesPerPlayer } = location.state || {};
+
+    const [gameInitialized, setGameInitialized] = useState(false);
+
     const {
         gameState,
         player,
@@ -23,21 +29,26 @@ const GamePage = () => {
         createPlayer,
         movePlayer,
         flagElement
-    } = useGame();
+    } = useGame(gameId);
 
     useEffect(() => {
         if (isConnected) {
-            const { bombs, mapSize, minesPerPlayer } = location.state || {};
 
             if (!bombs || !mapSize || !minesPerPlayer) {
                 navigate('/create');
                 return;
             }
 
-            initializeGame(mapSize, mapSize, bombs, minesPerPlayer);
-            createPlayer(0, 0, 2);
+            initializeGame(gameId, mapSize, mapSize, bombs, minesPerPlayer);
+            setGameInitialized(true);
         }
     }, [isConnected]);
+
+    useEffect(() => {
+        if (gameInitialized && isConnected && !player) {
+            createPlayer(gameId, 0, 0, 2);
+        }
+    }, [gameInitialized, isConnected, player]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -45,7 +56,7 @@ const GamePage = () => {
 
             const key = e.key.toLowerCase();
             if (['w', 'a', 's', 'd'].includes(key)) {
-                movePlayer(player.symbol, key.toUpperCase());
+                movePlayer(gameId, player.symbol, key.toUpperCase());
             }
         };
 
@@ -61,16 +72,16 @@ const GamePage = () => {
 
             switch (key) {
                 case 'ArrowUp':
-                    flagElement(player.symbol, 'u');
+                    flagElement(gameId, player.symbol, 'u');
                     break;
                 case 'ArrowDown':
-                    flagElement(player.symbol, 'd');
+                    flagElement(gameId, player.symbol, 'd');
                     break;
                 case 'ArrowLeft':
-                    flagElement(player.symbol, 'l');
+                    flagElement(gameId, player.symbol, 'l');
                     break;
                 case 'ArrowRight':
-                    flagElement(player.symbol, 'r');
+                    flagElement(gameId, player.symbol, 'r');
                     break;
                 default:
                     break;
