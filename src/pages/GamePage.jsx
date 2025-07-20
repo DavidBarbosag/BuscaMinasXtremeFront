@@ -1,4 +1,3 @@
-// src/pages/GamePage.jsx
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../hooks/useGame';
 import {useLocation, useNavigate, useParams} from 'react-router-dom';
@@ -32,23 +31,47 @@ const GamePage = () => {
     } = useGame(gameId);
 
     useEffect(() => {
-        if (isConnected) {
-
-            if (!bombs || !mapSize || !minesPerPlayer) {
-                navigate('/create');
-                return;
-            }
-
-            initializeGame(gameId, mapSize, mapSize, bombs, minesPerPlayer);
-            setGameInitialized(true);
-        }
-    }, [isConnected]);
+        console.log('Player ID actualizado:', player?.id);
+    }, [player?.id]);
 
     useEffect(() => {
-        if (gameInitialized && isConnected && !player) {
-            createPlayer(gameId, 0, 0, 2);
+        return () => {
+            localStorage.removeItem(`playerId-${gameId}`);
+        };
+    }, []);
+
+
+    useEffect(() => {
+        if (gameState?.status === 'FINISHED' && gameState?.winnerId) {
+            const winner = gameState.winnerId;
+            const isYou = winner === player?.id;
+            const message = isYou
+                ? 'You Win! Congratulations!'
+                : `Player ${winner} has won the game!`;
+            alertXpStyle(message);
         }
-    }, [gameInitialized, isConnected, player]);
+    }, [gameState?.status]);
+
+
+    useEffect(() => {
+        if (isConnected && !gameInitialized) {
+            if (bombs && mapSize && minesPerPlayer) {
+                initializeGame(gameId, mapSize, mapSize, bombs, minesPerPlayer);
+                setGameInitialized(true);
+            } else {
+                setGameInitialized(true);
+            }
+        }
+    }, [isConnected, gameInitialized]);
+
+    useEffect(() => {
+        if (gameInitialized && isConnected) {
+            const storedId = localStorage.getItem(`playerId-${gameId}`);
+            if (!storedId && !player?.id) {
+                createPlayer(gameId, 0, 0, 2);
+            }
+        }
+    }, [gameInitialized, isConnected, player?.id]);
 
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -56,7 +79,7 @@ const GamePage = () => {
 
             const key = e.key.toLowerCase();
             if (['w', 'a', 's', 'd'].includes(key)) {
-                movePlayer(gameId, player.symbol, key.toUpperCase());
+                movePlayer(gameId, player.id, key.toUpperCase());
             }
         };
 
@@ -72,23 +95,27 @@ const GamePage = () => {
 
             switch (key) {
                 case 'ArrowUp':
-                    flagElement(gameId, player.symbol, 'u');
+                    e.preventDefault();
+                    flagElement(gameId, player.id, 'u');
                     break;
                 case 'ArrowDown':
-                    flagElement(gameId, player.symbol, 'd');
+                    e.preventDefault();
+                    flagElement(gameId, player.id, 'd');
                     break;
                 case 'ArrowLeft':
-                    flagElement(gameId, player.symbol, 'l');
+                    e.preventDefault();
+                    flagElement(gameId, player.id, 'l');
                     break;
                 case 'ArrowRight':
-                    flagElement(gameId, player.symbol, 'r');
+                    e.preventDefault();
+                    flagElement(gameId, player.id, 'r');
                     break;
                 default:
                     break;
             }
         }
 
-        window.addEventListener('keydown', handleFlag);
+        window.addEventListener('keydown', handleFlag, { passive: false });
         return () => window.removeEventListener('keydown', handleFlag);
     }, [player, flagElement]);
 
@@ -103,11 +130,71 @@ const GamePage = () => {
                     </div>
                     <div className={box.BoxClassicCol} style={{ flex: 1 }}>
                         <ScoreBoard />
+
+                        <div style={{
+                            marginTop: '1rem',
+                            padding: '0.75rem 1rem',
+                            border: '2px solid #808080',
+                            backgroundColor: '#D4D0C8',
+                            boxShadow: 'inset 2px 2px #FFFFFF, inset -2px -2px #808080',
+                            borderRadius: '4px',
+                            fontFamily: 'Tahoma, Verdana, sans-serif',
+                            textAlign: 'center',
+                            fontSize: '18px',
+                            color: 'black',
+                            textShadow: '1px 1px 0 #ffffff'
+                        }}>
+                            Game ID: <span style={{ fontWeight: 'bold' }}>{gameId}</span>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
     );
 };
+
+function alertXpStyle(message) {
+    const alertBox = document.createElement('div');
+    alertBox.innerText = message;
+
+    Object.assign(alertBox.style, {
+        position: 'fixed',
+        top: '30%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        backgroundColor: '#D4D0C8',
+        border: '2px solid #808080',
+        boxShadow: '4px 4px #404040',
+        padding: '20px 30px',
+        zIndex: 9999,
+        fontFamily: 'Tahoma, sans-serif',
+        color: 'black',
+        fontSize: '18px',
+        textAlign: 'center',
+        textShadow: '1px 1px 0 #ffffff',
+        borderRadius: '4px',
+        animation: 'fadeInScale 0.4s ease-in-out',
+    });
+
+    const okButton = document.createElement('button');
+    okButton.innerText = 'OK';
+    Object.assign(okButton.style, {
+        marginTop: '15px',
+        padding: '5px 15px',
+        fontSize: '16px',
+        border: '1px solid #404040',
+        backgroundColor: '#E4E4E4',
+        cursor: 'pointer',
+        boxShadow: 'inset 1px 1px white, inset -1px -1px gray',
+    });
+
+    okButton.onclick = () => document.body.removeChild(alertBox);
+
+    alertBox.appendChild(document.createElement('br'));
+    alertBox.appendChild(okButton);
+
+    document.body.appendChild(alertBox);
+}
 
 export default GamePage;

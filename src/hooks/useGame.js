@@ -22,11 +22,24 @@ export function useGame(gameId) {
                 console.log("Mensaje recibido:", message.body);
                 const state = JSON.parse(message.body);
                 setGameState(state);
+
+                const storedId = localStorage.getItem(`playerId-${gameId}`);
+                if (storedId) {
+                    const foundPlayer = state.players?.find(p => p.id === storedId);
+                    if (foundPlayer) {
+                        setPlayer(foundPlayer);
+                    }
+                }
             });
 
             client.subscribe(`/topic/game/${gameId}/playerCreated`, message => {
                 const newPlayer = JSON.parse(message.body);
-                setPlayer(newPlayer);
+
+                const storedId = localStorage.getItem(`playerId-${gameId}`);
+                if (!storedId) {
+                    localStorage.setItem(`playerId-${gameId}`, newPlayer.id);
+                    setPlayer(newPlayer);
+                }
             });
         });
 
@@ -46,6 +59,7 @@ export function useGame(gameId) {
     };
 
     const initializeGame = (gameId, rows, cols, globalMines, minesPerPlayer) => {
+        console.log(`[Frontend] Enviando init a /app/init/${gameId}`, { rows, cols, globalMines, minesPerPlayer });
         sendMessage(`/app/init/${gameId}`, { rows, cols, globalMines, minesPerPlayer });
     };
 
