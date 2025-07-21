@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../hooks/useGame';
-import {useLocation, useNavigate, useParams} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import GameBoard from '../components/GameBoard';
 
 
@@ -14,7 +14,6 @@ import ScoreBoard from "../components/ScoreBoard.jsx";
 const GamePage = () => {
     const { gameId } = useParams();
     const location = useLocation();
-    const navigate = useNavigate();
 
     const { bombs, mapSize, minesPerPlayer } = location.state || {};
 
@@ -27,7 +26,9 @@ const GamePage = () => {
         initializeGame,
         createPlayer,
         movePlayer,
-        flagElement
+        flagElement,
+        placeMine,
+        changeMode
     } = useGame(gameId);
 
     useEffect(() => {
@@ -88,6 +89,20 @@ const GamePage = () => {
     }, [player, movePlayer]);
 
     useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (!player) return;
+
+            const key = e.key.toLowerCase();
+            if (['p'].includes(key)) {
+                changeMode(gameId, player.id, player.mode === 'N' ? 'T' : 'N');
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [player, movePlayer]);
+
+    useEffect(() => {
         const handleFlag = (e) => {
             if (!player) return;
 
@@ -96,19 +111,35 @@ const GamePage = () => {
             switch (key) {
                 case 'ArrowUp':
                     e.preventDefault();
-                    flagElement(gameId, player.id, 'u');
+                    if (player.mode === 'N') {
+                        flagElement(gameId, player.id, 'u');
+                    } else {
+                        placeMine(gameId, player.id, 'u');
+                    }
                     break;
                 case 'ArrowDown':
                     e.preventDefault();
-                    flagElement(gameId, player.id, 'd');
+                    if (player.mode === 'N') {
+                        flagElement(gameId, player.id, 'd');
+                    } else {
+                        placeMine(gameId, player.id, 'd');
+                    }
                     break;
                 case 'ArrowLeft':
                     e.preventDefault();
-                    flagElement(gameId, player.id, 'l');
+                    if (player.mode === 'N') {
+                        flagElement(gameId, player.id, 'l');
+                    } else {
+                        placeMine(gameId, player.id, 'l');
+                    }
                     break;
                 case 'ArrowRight':
                     e.preventDefault();
-                    flagElement(gameId, player.id, 'r');
+                    if (player.mode === 'N') {
+                        flagElement(gameId, player.id, 'r');
+                    } else {
+                        placeMine(gameId, player.id, 'r');
+                    }
                     break;
                 default:
                     break;

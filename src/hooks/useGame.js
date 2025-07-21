@@ -77,6 +77,15 @@ export function useGame(gameId) {
         sendMessage(`/app/flag/${gameId}`, { playerId, direction });
     };
 
+    const placeMine = (gameId, playerId, direction) => {
+        if (!playerId) return;
+        sendMessage(`/app/placeMine/${gameId}`, { playerId, direction });
+    };
+
+    const changeMode = (gameId, playerId, mode) => {
+        if (!playerId) return;
+        sendMessage(`/app/changeMode/${gameId}`, { playerId, mode });
+    }
 
     return {
         gameState,
@@ -86,5 +95,7 @@ export function useGame(gameId) {
         createPlayer,
         movePlayer,
         flagElement,
+        placeMine,
+        changeMode,
     };
 }

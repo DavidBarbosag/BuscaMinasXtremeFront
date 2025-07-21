@@ -63,7 +63,7 @@ export default function CreateRoomForm() {
                                 className={styles.input}
                                 value={minesPerPlayer}
                                 onChange={(e) => setMinesPerPlayer(e.target.value)}
-                                placeholder="Map Size"
+                                placeholder="Mines per player"
                                 min="10"
                             />
                         </label>
