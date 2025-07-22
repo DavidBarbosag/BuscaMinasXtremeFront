@@ -3,6 +3,7 @@ import { useGame } from '../hooks/useGame';
 import { useVoiceChat } from "../hooks/useVoiceChat.js";
 import {useLocation, useParams} from 'react-router-dom';
 import GameBoard from '../components/GameBoard';
+import LobbyChat from "../components/LobbyChat.jsx";
 
 
 import layout from '../components/layout/Container.module.css';
@@ -190,6 +191,9 @@ const GamePage = () => {
                             >
                                 🎙️ {muted ? "Unmute" : "Mute"}
                             </button>
+
+                            <LobbyChat wsUrl="ws://3.89.27.251:8081/signal-ws" />
+
                         </div>
                     </div>
                     <div className={box.BoxClassicCol} style={{ flex: 1 }}>
