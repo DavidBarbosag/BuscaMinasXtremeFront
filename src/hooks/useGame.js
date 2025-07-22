@@ -11,7 +11,12 @@ export function useGame(gameId) {
     useEffect(() => {
         if (!gameId) return;
         console.log("Conectando al WebSocket con gameId:", gameId);
-        const socket = new SockJS('http://localhost:8080/ws');
+        //const backendHost =
+        //    window.location.hostname === 'localhost'
+        //        ? 'http://localhost:8080'
+        //        : 'http://44.202.248.197:8080';
+
+        const socket = new SockJS('http://44.202.248.197:8080/ws');
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
