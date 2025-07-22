@@ -5,6 +5,7 @@ import CreateRoom from './pages/CreateRoom';
 import './App.css'
 import GamePage from './pages/GamePage';
 import VoiceCallPage from './pages/VoiceCallPage';
+import LostLobby from './pages/LostLobby';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/create" element={<CreateRoom />} />
           <Route path="/game/:gameId" element={<GamePage />} />
           <Route path="/voicecall" element={<VoiceCallPage />} />
+            <Route path="/lost-lobby" element={<LostLobby />} />
       </Routes>
   );
 }

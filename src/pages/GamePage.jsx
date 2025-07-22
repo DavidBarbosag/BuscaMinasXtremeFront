@@ -35,6 +35,8 @@ const GamePage = () => {
 
     const {localStream } = useVoiceChat();
     const [muted, setMuted] = useState(false);
+    const [chatFocused, setChatFocused] = useState(false);
+
 
     useEffect(() => {
         console.log('Player ID actualizado:', player?.id);
@@ -66,7 +68,6 @@ const GamePage = () => {
         }
     }, [gameState?.status]);
 
-
     useEffect(() => {
         if (isConnected && !gameInitialized) {
             if (bombs && mapSize && minesPerPlayer) {
@@ -88,6 +89,7 @@ const GamePage = () => {
     }, [gameInitialized, isConnected, player?.id]);
 
     useEffect(() => {
+        if (chatFocused) return;
         const handleKeyDown = (e) => {
             if (!player) return;
 
@@ -102,6 +104,7 @@ const GamePage = () => {
     }, [player, movePlayer]);
 
     useEffect(() => {
+        if (chatFocused) return;
         const handleKeyDown = (e) => {
             if (!player) return;
 
@@ -116,6 +119,7 @@ const GamePage = () => {
     }, [player, movePlayer]);
 
     useEffect(() => {
+        if (chatFocused) return;
         const handleFlag = (e) => {
             if (!player) return;
 
@@ -191,9 +195,6 @@ const GamePage = () => {
                             >
                                 🎙️ {muted ? "Unmute" : "Mute"}
                             </button>
-
-                            <LobbyChat wsUrl="ws://3.89.27.251:8081/signal-ws" />
-
                         </div>
                     </div>
                     <div className={box.BoxClassicCol} style={{ flex: 1 }}>
@@ -214,6 +215,23 @@ const GamePage = () => {
                         }}>
                             Game ID: <span style={{ fontWeight: 'bold' }}>{gameId}</span>
                         </div>
+
+                        <div
+                            style={{
+                                marginTop: '1.5rem',
+                                border: '2px solid #808080',
+                                backgroundColor: '#D4D0C8',
+                                boxShadow: 'inset 2px 2px #FFFFFF, inset -2px -2px #808080',
+                                borderRadius: '4px',
+                                padding: '0.5rem 0.75rem'
+                            }}
+                        >
+                            <LobbyChat
+                                onInputFocus={() => setChatFocused(true)}
+                                onInputBlur={() => setChatFocused(false)}
+                            />
+                        </div>
+
                     </div>
 
                 </div>

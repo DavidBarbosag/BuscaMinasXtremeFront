@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useChat } from "../hooks/useChat";
 
-export function LobbyChat({ wsUrl = "ws://3.89.27.251:8081/signal-ws" }) {
+const LobbyChat = ({
+                       wsUrl = "ws://3.89.27.251:8081/signal-ws",
+                       onInputFocus = () => {},
+                       onInputBlur = () => {}
+                   }) => {
     const { connected, messages, sendMessage } = useChat(wsUrl);
     const [input, setInput] = useState("");
 
@@ -13,11 +17,10 @@ export function LobbyChat({ wsUrl = "ws://3.89.27.251:8081/signal-ws" }) {
         }
     };
 
-    // Solo mostrar los últimos 5 mensajes
     const lastMessages = messages.slice(-5);
 
     return (
-        <div style={{ maxWidth: 400, margin: "40px auto", border: "1px solid #ccc", borderRadius: 8, padding: 16 }}>
+        <div style={{ maxWidth: 400, margin: "20px auto", border: "1px solid #ccc", borderRadius: 8, padding: 16 }}>
             <h2>Lobby de Chat</h2>
             <div style={{ minHeight: 120, maxHeight: 150, overflowY: "auto", marginBottom: 16, background: "#f9f9f9", padding: 8 }}>
                 {lastMessages.map((msg, idx) => (
@@ -33,6 +36,8 @@ export function LobbyChat({ wsUrl = "ws://3.89.27.251:8081/signal-ws" }) {
                     type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
+                    onFocus={onInputFocus}
+                    onBlur={onInputBlur}
                     placeholder={connected ? "Escribe un mensaje..." : "Conectando..."}
                     disabled={!connected}
                     style={{ flex: 1, padding: 8 }}
@@ -42,4 +47,6 @@ export function LobbyChat({ wsUrl = "ws://3.89.27.251:8081/signal-ws" }) {
             {!connected && <div style={{ color: "red", marginTop: 8 }}>Desconectado del chat</div>}
         </div>
     );
-}
+};
+
+export default LobbyChat;
