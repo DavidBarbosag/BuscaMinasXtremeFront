@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useVoiceChat(url = "ws://localhost:8081/signal-ws") {
+export function useVoiceChat(url = "ws://3.89.27.251:8081/signal-ws") {
     const ws = useRef(null);
     const peerConnection = useRef(null);
     const localStream = useRef(null);
