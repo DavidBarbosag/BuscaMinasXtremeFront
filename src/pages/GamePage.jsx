@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../hooks/useGame';
+import { useVoiceChat } from "../hooks/useVoiceChat.js";
 import {useLocation, useParams} from 'react-router-dom';
 import GameBoard from '../components/GameBoard';
 
@@ -31,6 +32,9 @@ const GamePage = () => {
         changeMode
     } = useGame(gameId);
 
+    const {localStream } = useVoiceChat();
+    const [muted, setMuted] = useState(false);
+
     useEffect(() => {
         console.log('Player ID actualizado:', player?.id);
     }, [player?.id]);
@@ -40,6 +44,14 @@ const GamePage = () => {
             localStorage.removeItem(`playerId-${gameId}`);
         };
     }, []);
+
+    useEffect(() => {
+        if (localStream.current) {
+            localStream.current.getAudioTracks().forEach(track => {
+                track.enabled = !muted;
+            });
+        }
+    }, [muted]);
 
 
     useEffect(() => {
@@ -158,6 +170,27 @@ const GamePage = () => {
                 <div className={box.BoxClassicGlobalRow}>
                     <div className={box.BoxClassicCol} style={{ flex: 3 }}>
                         <GameBoard boardMatrix={gameState?.boardMatrix} player={player} />
+
+                        <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                            <audio id="remote-audio" autoPlay />
+                            <button
+                                onClick={() => setMuted(prev => !prev)}
+                                style={{
+                                    marginTop: '0.5rem',
+                                    padding: '6px 12px',
+                                    fontSize: '14px',
+                                    border: '2px solid #808080',
+                                    backgroundColor: '#D4D0C8',
+                                    fontFamily: 'Tahoma, sans-serif',
+                                    color: 'black',
+                                    boxShadow: 'inset 2px 2px white, inset -2px -2px gray',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                🎙️ {muted ? "Unmute" : "Mute"}
+                            </button>
+                        </div>
                     </div>
                     <div className={box.BoxClassicCol} style={{ flex: 1 }}>
                         <ScoreBoard />

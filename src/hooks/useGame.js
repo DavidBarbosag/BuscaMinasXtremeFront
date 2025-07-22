@@ -19,7 +19,6 @@ export function useGame(gameId) {
             stompClientRef.current = client;
 
             client.subscribe(`/topic/game/${gameId}`, message => {
-                console.log("Mensaje recibido:", message.body);
                 const state = JSON.parse(message.body);
                 setGameState(state);
 
