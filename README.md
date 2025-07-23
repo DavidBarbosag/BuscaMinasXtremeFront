@@ -80,6 +80,8 @@ You can modify the URLs in the hooks according to your environment.
 
 ### Game Board
 
+![lobby](gameBoard.png)
+
 ## Author
 
 Developed by David Alfonso Barbosa Gomez for the BuscaminasXtreme team.
