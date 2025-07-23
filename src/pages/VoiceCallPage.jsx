@@ -1,3 +1,4 @@
+/**
 import React, { useEffect, useRef } from "react";
 import { useVoiceChat } from "../hooks/useVoiceChat.js";
 
@@ -28,3 +29,4 @@ export default function VoiceCallPage() {
         </div>
     );
 }
+*/

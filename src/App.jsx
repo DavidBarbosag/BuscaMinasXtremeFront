@@ -4,7 +4,7 @@ import JoinRoom from './pages/JoinRoom';
 import CreateRoom from './pages/CreateRoom';
 import './App.css'
 import GamePage from './pages/GamePage';
-import VoiceCallPage from './pages/VoiceCallPage';
+//import VoiceCallPage from './pages/VoiceCallPage';
 import LostLobby from './pages/LostLobby';
 
 function App() {
