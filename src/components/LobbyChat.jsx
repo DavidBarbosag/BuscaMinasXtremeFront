@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useChat } from "../hooks/useChat";
 
 const LobbyChat = ({
-                       wsUrl = "ws://3.89.27.251:8081/signal-ws",
+                       wsUrl = "ws://34.224.222.56:8081/signal-ws",
                        onInputFocus = () => {},
                        onInputBlur = () => {}
                    }) => {
