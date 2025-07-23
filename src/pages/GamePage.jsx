@@ -80,13 +80,15 @@ const GamePage = () => {
     }, [isConnected, gameInitialized]);
 
     useEffect(() => {
-        if (gameInitialized && isConnected) {
-            const storedId = localStorage.getItem(`playerId-${gameId}`);
-            if (!storedId && !player?.id) {
-                createPlayer(gameId, 0, 0, 2);
-            }
+        if (!isConnected || !gameInitialized) return;
+
+        const storedId = localStorage.getItem(`playerId-${gameId}`);
+
+        if (!storedId && !player?.id) {
+            console.log("Intentando crear jugador...");
+            createPlayer(gameId, 0, 0, minesPerPlayer);
         }
-    }, [gameInitialized, isConnected, player?.id]);
+    }, [isConnected, gameInitialized, player?.id]);
 
     useEffect(() => {
         if (chatFocused) return;
