@@ -20,7 +20,7 @@ const LostLobby = () => {
             <div style={{ marginBottom: 32 }}>
                 <GameBoard boardMatrix={boardMatrix} player={player} />
             </div>
-            <LobbyChat wsUrl="ws://34.224.222.56:8081/signal-ws" />
+            <LobbyChat wsUrl="ws://54.167.65.133:8081/signal-ws" />
         </div>
     );
 };

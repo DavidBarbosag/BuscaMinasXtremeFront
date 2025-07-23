@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-export function useVoiceChat(url = "ws://34.224.222.56:8081/signal-ws") {
+export function useVoiceChat(url = "ws://54.167.65.133:8081/signal-ws") {
     const ws = useRef(null);
     const peerConnection = useRef(null);
     const localStream = useRef(null);

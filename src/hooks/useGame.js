@@ -16,7 +16,7 @@ export function useGame(gameId) {
         //        ? 'http://localhost:8080'
         //        : 'http://44.202.248.197:8080';
 
-        const socket = new SockJS('http://34.226.140.207:8080/ws');
+        const socket = new SockJS('http://44.201.185.243:8080/ws');
         const client = Stomp.over(socket);
 
         client.connect({}, () => {
