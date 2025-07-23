@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 
-export function useChat(url = "ws://3.89.27.251:8081/signal-ws") {
+export function useChat(url = "ws://34.224.222.56:8081/signal-ws") {
     const ws = useRef(null);
     const [connected, setConnected] = useState(false);
     const [messages, setMessages] = useState([]);

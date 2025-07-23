@@ -196,9 +196,6 @@ const GamePage = () => {
                                 🎙️ {muted ? "Unmute" : "Mute"}
                             </button>
                         </div>
-                    </div>
-                    <div className={box.BoxClassicCol} style={{ flex: 1 }}>
-                        <ScoreBoard />
 
                         <div style={{
                             marginTop: '1rem',
@@ -215,6 +212,9 @@ const GamePage = () => {
                         }}>
                             Game ID: <span style={{ fontWeight: 'bold' }}>{gameId}</span>
                         </div>
+                    </div>
+                    <div className={box.BoxClassicCol} style={{ flex: 1 }}>
+                        <ScoreBoard />
 
                         <div
                             style={{

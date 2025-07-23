@@ -44,19 +44,6 @@ export default function CreateRoomForm() {
                     {/* Fila de selectores */}
                     <div className={styles.row}>
                         <label className={styles.label}>
-                            Players:
-                            <select
-                                className={styles.select}
-                                value={players}
-                                onChange={(e) => setPlayers(e.target.value)}
-                            >
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
-                            </select>
-                        </label>
-
-                        <label className={styles.label}>
                             Mines per player:
                             <input
                                 type="number"
