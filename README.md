@@ -80,7 +80,7 @@ You can modify the URLs in the hooks according to your environment.
 
 ### Game Board
 
-![lobby](gameBoard.png)
+![lobby](src/assets/gameBoard.png)
 
 ## Author
 
