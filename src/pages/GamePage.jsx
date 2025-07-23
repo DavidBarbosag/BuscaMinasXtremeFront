@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useGame } from '../hooks/useGame';
-import { useVoiceChat } from "../hooks/useVoiceChat.js";
+//import { useVoiceChat } from "../hooks/useVoiceChat.js";
 import {useLocation, useParams} from 'react-router-dom';
 import GameBoard from '../components/GameBoard';
 import LobbyChat from "../components/LobbyChat.jsx";
@@ -33,7 +33,7 @@ const GamePage = () => {
         changeMode
     } = useGame(gameId);
 
-    const {localStream } = useVoiceChat();
+   // const {localStream } = useVoiceChat();
     const [muted, setMuted] = useState(false);
     const [chatFocused, setChatFocused] = useState(false);
 
@@ -48,13 +48,13 @@ const GamePage = () => {
         };
     }, []);
 
-    useEffect(() => {
-        if (localStream.current) {
-            localStream.current.getAudioTracks().forEach(track => {
-                track.enabled = !muted;
-            });
-        }
-    }, [muted]);
+    //useEffect(() => {
+    //    if (localStream.current) {
+    //        localStream.current.getAudioTracks().forEach(track => {
+    //            track.enabled = !muted;
+    //        });
+    //    }
+    //}, [muted]);
 
 
     useEffect(() => {
